@@ -1,8 +1,13 @@
+
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include <iostream>
 #include <stdio.h>
 using namespace std;
+
+#define threadsPerBlock 1024
+#define threadsPerBlockPerAxis 32
+#define imin(a,b) (a<b?a:b)
 
 
 __global__ void multiplyMatrixByVector(int* mat, int* vec, int m, int n, int size, int* output) {
@@ -69,11 +74,12 @@ int main(){
 	cudaMemcpy(dev_vec, vec, n * sizeof(int), cudaMemcpyHostToDevice);
 
 	// Define dimensions of grid and block
-	dim3 blocks(32, 32, 1);
-	dim3 grid(20, 20, 1);
+	dim3 blocks(threadsPerBlockPerAxis, threadsPerBlockPerAxis, 1);
+	const int blocksPerGrid =
+		imin(32, (size + threadsPerBlock - 1) / threadsPerBlock);
 
 	// Call function
-	multiplyMatrixByVector << < grid, blocks >> > (dev_mat, dev_vec, m, n, size, dev_output);
+	multiplyMatrixByVector << < blocksPerGrid, blocks >> > (dev_mat, dev_vec, m, n, size, dev_output);
 
 	// Copy output
 	cudaMemcpy(output, dev_output, m * sizeof(int), cudaMemcpyDeviceToHost);

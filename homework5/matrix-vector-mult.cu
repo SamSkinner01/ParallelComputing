@@ -96,7 +96,12 @@ int main(){
 			printf("%d ", output[i]);
 		printf("\n");
 	}
-
-	printf("\nFINISHED CALCULATING\n");
+	else {
+		printf("\n\nOutput Vector: \n");
+		for (int i = 0; i < 20; i++)
+			printf("%d ", output[i]);
+	
+		printf("\n\nFINISHED CALCULATING\n");
+	}
 }
 

@@ -46,7 +46,7 @@ __global__ void findLargest(int* vec, int N, int* largest) {
 
 	// store the largest value found
 	if (cacheIndex == 0)
-		largest[0] = cache[0];
+		largest[blockIdx.x] = cache[0];
 }
 
 int main() {

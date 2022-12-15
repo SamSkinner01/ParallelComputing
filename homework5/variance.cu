@@ -41,8 +41,8 @@ __global__ void findMean(int* a, int N, double* mean) {
 
 	// Find mean over blocks sum
 	if (sumIndex == 0) {
-		mean[0] = sum[0];
-		mean[0] /= N;
+		mean[blockIdx.x] = sum[0];
+		mean[blockIdx.x] /= N;
 	}
 }
 
@@ -80,7 +80,7 @@ __global__ void distanceFromMeanSquared(int* a, int N, double mean, double* dist
 
 	// Find distance from mean squared for the block
 	if (distanceIndex == 0) {
-		distance[0] = distanceFromMean[0];
+		distance[blockIdx.x] = distanceFromMean[0];
 	}
 }
 
